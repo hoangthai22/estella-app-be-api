@@ -4,7 +4,7 @@ let dbInstance = null;
 
 
 export const connectDB = async () => {
-  const client = new MongoClient("mongodb+srv://hoangthai:P6jFgHQ6t4AaAWb@cluster0.qbbst.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+  const client = new MongoClient("mongodb+srv://hoangthai:UXKFX7HctXN4Rd1n@cluster0.08izc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   }); 
