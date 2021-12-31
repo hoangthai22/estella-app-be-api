@@ -1,11 +1,10 @@
-import { MongoClient,  } from "mongodb";
-import { env } from "./enviroment.js";
+import { MongoClient } from "mongodb";
 
 let dbInstance = null;
 
 
 export const connectDB = async () => {
-  const client = new MongoClient(env.MONGODB_URI, {
+  const client = new MongoClient("mongodb+srv://hoangthai:P6jFgHQ6t4AaAWb@cluster0.qbbst.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   }); 
@@ -14,7 +13,7 @@ export const connectDB = async () => {
   await client.connect();
 
   //Assign clientDB to our dbInstance
-  console.log(env.DATABASE_NAME);
+
   dbInstance = client.db('estella-app');
 }; 
 
