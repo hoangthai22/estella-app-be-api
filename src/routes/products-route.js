@@ -11,5 +11,6 @@ router.get("/status", (req, res) =>
 );
 
 router.route("/products").get(ProductController.getAllProducts);
-
+router.route("/products").delete(ProductController.remove);
+router.route("/products").post(ProductController.createProduct);
 export const api = router;

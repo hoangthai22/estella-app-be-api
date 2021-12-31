@@ -8,9 +8,41 @@ const getAllProducts = async (req, res) => {
   } catch (error) {
     console.log("errorController: " + error);
     res.status(HttpStatusCode.INTERNAL_SERVER).json({
-      errors: error,
+      errors: error.message,
     });
   }
 };
 
-export const ProductController = { getAllProducts };
+const remove = async (req, res) => {
+  try {
+    const result = await ProductModel.remove();
+    if (result.acknowledged) {
+      res.status(HttpStatusCode.CREATED).json({
+        Message: "OK",
+      });
+    }
+  } catch (error) {
+    console.log("errorController: " + error);
+    res.status(HttpStatusCode.INTERNAL_SERVER).json({
+      errors: error.message,
+    });
+  }
+};
+
+const createProduct = async (req, res) => {
+  try {
+    const result = await ProductModel.createProduct(req.body);
+
+    if (result.acknowledged) {
+      res.status(HttpStatusCode.CREATED).json({
+        Message: "OK",
+      });
+    }
+  } catch (error) {
+    res.status(HttpStatusCode.INTERNAL_SERVER).json({
+      errors: error.message,
+    });
+  }
+};
+
+export const ProductController = { getAllProducts, remove, createProduct };
