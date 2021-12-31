@@ -16,7 +16,7 @@ const bootServer = () => {
   //Use Apis v1
   app.use("/api", api);
 
-  app.listen(port, () => {
+  app.listen(process.env.PORT || port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
   });
 };
