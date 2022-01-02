@@ -474,19 +474,19 @@ export const Categorys = [
   {
     id: "1",
     categoryName: "Giày Sandal",
-    isActive: true,
+    _destroy: true,
     slug: "giay-sandal",
   },
   {
     id: "2",
     categoryName: "Giày cao gót",
-    isActive: true,
+    _destroy: true,
     slug: "giay-cao-got",
   },
   {
     id: "3",
     categoryName: "Giày Sneaker",
-    isActive: true,
+    _destroy: true,
     slug: "giay-sneaker",
   },
 ];

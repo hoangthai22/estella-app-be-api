@@ -9,8 +9,11 @@ router.get("/status", (req, res) =>
     status: "OK Nha!",
   })
 );
-
+router.route("/product").get(ProductController.getProductByCategory);
 router.route("/products").get(ProductController.getAllProducts);
 router.route("/products").delete(ProductController.remove);
 router.route("/products").post(ProductController.createProduct);
-export const api = router;
+router.route("/product/:id").put(ProductController.updateProduct);
+router.route("/product/:id").get(ProductController.getProduct);
+
+export const apiProduct = router;
