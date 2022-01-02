@@ -8,7 +8,7 @@ const port = 3000;
 const bootServer = () => {
   const app = express();
   const corsOptions = {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3000" || "http://192.168.1.8:3000",
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   };
   app.use(cors(corsOptions));
