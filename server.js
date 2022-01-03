@@ -1,9 +1,21 @@
+import bodyParser from "body-parser";
+import cloudinary from "cloudinary";
+import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import { connectDB, getDB } from "./src/config/mongodb.js";
-import cors from "cors";
-import { apiProduct } from "./src/routes/products-route.js";
 import { apapiCategory } from "./src/routes/category-route.js";
-const port = 3000;
+import { apiProduct } from "./src/routes/products-route.js";
+
+dotenv.config();
+
+export let cloudinaryConfig = cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const port = 4000;
 
 const bootServer = () => {
   const app = express();
@@ -13,7 +25,10 @@ const bootServer = () => {
     optionSuccessStatus: 200,
   };
   app.use(cors(corsOptions));
-  //Enable req.body.data
+  app.use(express.static("public"));
+  app.use(express.json({ limit: "50mb" }));
+  app.use(bodyParser.urlencoded({ extended: true }));
+
   app.use(express.json());
   //Use Apis v1
   app.use("/api", apiProduct);

@@ -1,6 +1,7 @@
 import { ProductModel } from "../models/products-model.js";
-import { HttpStatusCode } from "./../utils/constants.js";
+import { upload } from "../uploads/multer.js";
 
+import { HttpStatusCode } from "./../utils/constants.js";
 const getAllProducts = async (req, res) => {
   try {
     const { permission } = req.query;
@@ -81,4 +82,5 @@ const updateProduct = async (req, res) => {
     });
   }
 };
+
 export const ProductController = { getAllProducts, remove, createProduct, getProduct, getProductByCategory, updateProduct };

@@ -60,10 +60,11 @@ const remove = async (id) => {
 
 const createProduct = async (data) => {
   try {
+    console.log({data});
     const value = await validateSchema(data);
-    const result = await getDB().collection(productCollection).insertOne(value);
+    // const result = await getDB().collection(productCollection).insertOne(value);
 
-    return result;
+    return true;
   } catch (error) {
     throw new Error(error?.details[0]?.message);
   }
