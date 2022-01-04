@@ -1,7 +1,7 @@
 import Joi from "joi";
 import { getDB } from "./../config/mongodb.js";
 import { ObjectId } from "mongodb";
-
+import slug from "slug";
 //Defint Board collection
 const productCollection = "products";
 const productsCollectionSchema = Joi.object({
@@ -61,6 +61,8 @@ const remove = async (id) => {
 const createProduct = async (data) => {
   try {
     console.log({data});
+    const slugtest = slug("i love u", "-")
+    console.log({slugtest});
     const value = await validateSchema(data);
     // const result = await getDB().collection(productCollection).insertOne(value);
 
