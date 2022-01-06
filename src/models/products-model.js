@@ -93,6 +93,12 @@ const getProductsByCategory = async (slug, page, limit) => {
       .limit(parseInt(limit))
       .skip(parseInt(limit) * (page - 1))
       .toArray();
+
+      const count = await getDB()
+      .collection(productCollection)
+      .find({
+        "category.slug": slug,
+      }).count()
     let newProducts = result.map((item) => {
       return {
         id: item._id,
@@ -101,6 +107,7 @@ const getProductsByCategory = async (slug, page, limit) => {
         price: item.price,
         sale: item.sale,
         slug: item.slug,
+        count: count
       };
     });
     return newProducts;
