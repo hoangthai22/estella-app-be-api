@@ -61,7 +61,7 @@ const remove = async (id) => {
 const createProduct = async (data) => {
   try {
     console.log({data});
-    const slugtest = slug("i love u", "-")
+    const slugtest = slug(data.productName, "-")
     console.log({slugtest});
     const value = await validateSchema(data);
     // const result = await getDB().collection(productCollection).insertOne(value);
@@ -83,12 +83,12 @@ const getProduct = async (data) => {
   }
 };
 
-const getProductsByCategory = async (categoryId, page, limit) => {
+const getProductsByCategory = async (slug, page, limit) => {
   try {
     const result = await getDB()
       .collection(productCollection)
       .find({
-        "category.id": categoryId,
+        "category.slug": slug,
       })
       .limit(parseInt(limit))
       .skip(parseInt(limit) * (page - 1))

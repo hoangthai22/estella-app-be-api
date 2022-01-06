@@ -61,8 +61,8 @@ const getProduct = async (req, res) => {
 
 const getProductByCategory = async (req, res) => {
   try {
-    const { categoryId, page, limit } = req.query;
-    const result = await ProductModel.getProductsByCategory(categoryId, page, limit);
+    const { slug, page, limit } = req.query;
+    const result = await ProductModel.getProductsByCategory(slug, page, limit);
     res.status(HttpStatusCode.SUCCESS).json(result);
   } catch (error) {
     res.status(HttpStatusCode.INTERNAL_SERVER).json({
