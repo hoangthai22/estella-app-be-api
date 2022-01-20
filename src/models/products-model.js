@@ -60,13 +60,13 @@ const remove = async (id) => {
 
 const createProduct = async (data) => {
   try {
-    console.log({data});
-    const slugtest = slug(data.productName, "-")
-    console.log({slugtest});
-    const value = await validateSchema(data);
-    // const result = await getDB().collection(productCollection).insertOne(value);
+    const slugtest = slug(data.productName, "-");
+    let newData = { ...data, slug: slugtest };
+    const value = await validateSchema(newData);
+    console.log(value);
+    const result = await getDB().collection(productCollection).insertOne(value);
 
-    return true;
+    return result;
   } catch (error) {
     throw new Error(error?.details[0]?.message);
   }
@@ -94,11 +94,12 @@ const getProductsByCategory = async (slug, page, limit) => {
       .skip(parseInt(limit) * (page - 1))
       .toArray();
 
-      const count = await getDB()
+    const count = await getDB()
       .collection(productCollection)
       .find({
         "category.slug": slug,
-      }).count()
+      })
+      .count();
     let newProducts = result.map((item) => {
       return {
         id: item._id,
@@ -107,7 +108,7 @@ const getProductsByCategory = async (slug, page, limit) => {
         price: item.price,
         sale: item.sale,
         slug: item.slug,
-        count: count
+        count: count,
       };
     });
     return newProducts;

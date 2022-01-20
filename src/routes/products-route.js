@@ -14,7 +14,7 @@ router.get("/status", (req, res) =>
 router.route("/product").get(ProductController.getProductByCategory);
 router.route("/products").get(ProductController.getAllProducts);
 router.route("/products").delete(ProductController.remove);
-router.route("/product").post(uploadImgMiddleware, ProductController.createProduct);
+router.route("/product").post( ProductController.createProduct);
 router.route("/product/:id").put(ProductController.updateProduct);
 router.route("/product/:id").get(ProductController.getProduct);
 
