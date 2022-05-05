@@ -4,7 +4,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import { connectDB, getDB } from "./src/config/mongodb.js";
-import { apapiCategory } from "./src/routes/category-route.js";
+import { apiCategory } from "./src/routes/category-route.js";
+import { apiOrder } from "./src/routes/orders-route.js";
+import { apiProductOrder } from "./src/routes/product-order-routes.js";
 import { apiProduct } from "./src/routes/products-route.js";
 
 dotenv.config();
@@ -32,7 +34,9 @@ const bootServer = () => {
   app.use(express.json());
   //Use Apis v1
   app.use("/api", apiProduct);
-  app.use("/api", apapiCategory);
+  app.use("/api", apiCategory);
+  app.use("/api", apiOrder);
+  app.use("/api", apiProductOrder);
 
   app.listen(process.env.PORT || port, () => {
     console.log(`Example app listening at http://localhost:${port}`);

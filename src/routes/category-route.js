@@ -14,4 +14,4 @@ router.route("/categorys").get(CategoryController.getAllCategorys);
 router.route("/categorys").delete(CategoryController.remove);
 router.route("/categorys").post(CategoryController.createCategory);
 router.route("/category/:id").put(CategoryController.updateCategory);
-export const apapiCategory = router;
+export const apiCategory = router;
