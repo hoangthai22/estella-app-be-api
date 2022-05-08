@@ -9,6 +9,7 @@ const ordersCollectionSchema = Joi.object({
     information: Joi.string().required().min(0).max(500).trim(),
     _destroy: Joi.boolean().default(false),
     isFinish: Joi.boolean().default(false),
+    pay: Joi.number().integer(),
     createdAt: Joi.date().timestamp(),
     updatedAt: Joi.date().timestamp().default(null),
 });
