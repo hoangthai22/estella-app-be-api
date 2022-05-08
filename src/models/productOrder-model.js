@@ -30,7 +30,7 @@ const getAllProductOrders = async (page, limit) => {
             .skip(parseInt(page - 1))
             .limit(parseInt(limit))
             .sort({
-                createdAt: 1,
+                createdAt: -1,
             })
             .toArray();
 
