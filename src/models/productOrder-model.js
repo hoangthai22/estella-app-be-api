@@ -10,6 +10,7 @@ const productOrdersCollectionSchema = Joi.object({
     originalPrice: Joi.number().integer().required(),
     price: Joi.number().integer().required(),
     _destroy: Joi.boolean().default(false),
+    isChecked: Joi.boolean().default(false),
     createdAt: Joi.date().timestamp().default(Date.now()),
     updatedAt: Joi.date().timestamp().default(null),
 });
