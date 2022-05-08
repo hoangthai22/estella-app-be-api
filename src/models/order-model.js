@@ -9,7 +9,7 @@ const ordersCollectionSchema = Joi.object({
     information: Joi.string().required().min(0).max(500).trim(),
     _destroy: Joi.boolean().default(false),
     isFinish: Joi.boolean().default(false),
-    createdAt: Joi.date().timestamp().default(Date.now()),
+    createdAt: Joi.date().timestamp(),
     updatedAt: Joi.date().timestamp().default(null),
 });
 
@@ -91,7 +91,8 @@ const remove = async (id) => {
 };
 const createOrder = async (data) => {
     try {
-        const value = await validateSchema(data);
+        const newData = { ...data, createdAt: Date.now() };
+        const value = await validateSchema(newData);
         const result = await getDB().collection(ordersCollection).insertOne(value);
 
         return result;
@@ -101,14 +102,14 @@ const createOrder = async (data) => {
 };
 const updateOrder = async (id, data) => {
     try {
+        const newData = { ...data, updatedAt: Date.now() };
         const result = await getDB()
             .collection(ordersCollection)
             .findOneAndUpdate(
                 { _id: ObjectId(id) },
                 {
                     $set: {
-                        ...data,
-                        updatedAt: Date.now(),
+                        ...newData,
                     },
                 },
                 { returnDocument: "after" }

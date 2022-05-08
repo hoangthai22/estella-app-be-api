@@ -11,7 +11,7 @@ const productOrdersCollectionSchema = Joi.object({
     price: Joi.number().integer().required(),
     _destroy: Joi.boolean().default(false),
     isChecked: Joi.boolean().default(false),
-    createdAt: Joi.date().timestamp().default(Date.now()),
+    createdAt: Joi.date().timestamp(),
     updatedAt: Joi.date().timestamp().default(null),
 });
 
@@ -59,9 +59,9 @@ const remove = async (id) => {
 };
 const createProductOrder = async (data) => {
     try {
-        const value = await validateSchema(data);
+        const newData = { ...data, createdAt: Date.now() };
+        const value = await validateSchema(newData);
         const result = await getDB().collection(productOrdersCollection).insertOne(value);
-
         return result;
     } catch (error) {
         throw new Error(error?.details[0]?.message);
@@ -69,14 +69,14 @@ const createProductOrder = async (data) => {
 };
 const updateProductOrder = async (id, data) => {
     try {
+        const newData = { ...data, updatedAt: Date.now() };
         const result = await getDB()
             .collection(productOrdersCollection)
             .findOneAndUpdate(
                 { _id: ObjectId(id) },
                 {
                     $set: {
-                        ...data,
-                        updatedAt: Date.now(),
+                        ...newData,
                     },
                 },
                 { returnDocument: "after" }
