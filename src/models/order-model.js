@@ -10,6 +10,7 @@ const ordersCollectionSchema = Joi.object({
     _destroy: Joi.boolean().default(false),
     isFinish: Joi.boolean().default(false),
     pay: Joi.number().integer(),
+    total: Joi.number().integer(),
     createdAt: Joi.date().timestamp(),
     updatedAt: Joi.date().timestamp().default(null),
 });
@@ -92,7 +93,11 @@ const remove = async (id) => {
 };
 const createOrder = async (data) => {
     try {
-        const newData = { ...data, createdAt: Date.now() };
+        let total = 0;
+        for (let index = 0; index < data.productOrders.length; index++) {
+            total = data.productOrders[index].price + total;
+        }
+        const newData = { ...data, createdAt: Date.now(), total: total };
         const value = await validateSchema(newData);
         const result = await getDB().collection(ordersCollection).insertOne(value);
 
