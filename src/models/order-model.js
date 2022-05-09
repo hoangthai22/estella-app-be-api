@@ -31,7 +31,7 @@ const getAllOrders = async (limit, page) => {
             .skip(parseInt(page - 1))
             .limit(parseInt(limit))
             .sort({
-                createdAt: 1,
+                createdAt: -1,
             })
             .toArray();
 
@@ -49,7 +49,7 @@ const getOrderIsFinish = async (limit, page) => {
             .skip(parseInt(page - 1))
             .limit(parseInt(limit))
             .sort({
-                createdAt: 1,
+                createdAt: -1,
             })
             .toArray();
 
@@ -75,7 +75,7 @@ const searchByKeyOrder = async (key) => {
             .collection(ordersCollection)
             .find({ _destroy: false, information: { $regex: key } })
             .sort({
-                createdAt: 1,
+                createdAt: -1,
             })
             .toArray();
         return result;
