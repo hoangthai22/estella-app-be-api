@@ -11,6 +11,7 @@ const ordersCollectionSchema = Joi.object({
     isFinish: Joi.boolean().default(false),
     pay: Joi.number().integer(),
     total: Joi.number().integer(),
+    profit: Joi.number().integer(),
     createdAt: Joi.date().timestamp(),
     updatedAt: Joi.date().timestamp().default(null),
 });
@@ -58,6 +59,28 @@ const getOrderIsFinish = async (limit, page) => {
         throw new Error(error?.details[0]?.message);
     }
 };
+const getOrderRevenue = async () => {
+    try {
+        const orders = await getDB().collection(ordersCollection).find({ _destroy: false, isFinish: false }).toArray();
+        const orderFinishs = await getDB().collection(ordersCollection).find({ _destroy: false, isFinish: true }).toArray();
+        const orderDelete = await getDB().collection(ordersCollection).find({ _destroy: true, isFinish: true }).toArray();
+        let profit = 0;
+        let revenue = 0;
+        orderFinishs.map((item) => {
+            profit = item.profit + profit;
+            revenue = item.total + revenue;
+        });
+        return {
+            orders: orders.length,
+            orderFinishs: orderFinishs.length,
+            orderDelete: orderDelete.length,
+            profit: profit,
+            revenue: revenue,
+        };
+    } catch (error) {
+        throw new Error(error?.details[0]?.message);
+    }
+};
 const getOrderById = async (id) => {
     try {
         const result = await getDB()
@@ -94,10 +117,14 @@ const remove = async (id) => {
 const createOrder = async (data) => {
     try {
         let total = 0;
+        let profit = 0;
         for (let index = 0; index < data.productOrders.length; index++) {
             total = data.productOrders[index].price + total;
         }
-        const newData = { ...data, createdAt: Date.now(), total: total };
+        for (let index = 0; index < data.productOrders.length; index++) {
+            profit = data.productOrders[index].price - data.productOrders[index].originalPrice + total;
+        }
+        const newData = { ...data, createdAt: Date.now(), total: total, profit: profit };
         const value = await validateSchema(newData);
         const result = await getDB().collection(ordersCollection).insertOne(value);
 
@@ -125,4 +152,4 @@ const updateOrder = async (id, data) => {
         throw new Error(error);
     }
 };
-export const OrderModel = { createOrder, getAllOrders, getOrderIsFinish, remove, updateOrder, searchByKeyOrder, getOrderById };
+export const OrderModel = { createOrder, getAllOrders, getOrderIsFinish, remove, updateOrder, searchByKeyOrder, getOrderById, getOrderRevenue };

@@ -23,6 +23,16 @@ const getOrderIsFinish = async (req, res) => {
         });
     }
 };
+const getOrderRevenue = async (req, res) => {
+    try {
+        const result = await OrderModel.getOrderRevenue();
+        res.status(HttpStatusCode.SUCCESS).json(result);
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            errors: error.message,
+        });
+    }
+};
 const getOrderById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -88,4 +98,4 @@ const updateOrder = async (req, res) => {
         });
     }
 };
-export const OrderController = { createOrder, getAllOrders, getOrderIsFinish, remove, updateOrder, searchByKeyOrder, getOrderById };
+export const OrderController = { createOrder, getAllOrders, getOrderIsFinish, remove, updateOrder, searchByKeyOrder, getOrderById, getOrderRevenue };
