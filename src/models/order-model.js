@@ -119,10 +119,10 @@ const createOrder = async (data) => {
         let total = 0;
         let profit = 0;
         for (let index = 0; index < data.productOrders.length; index++) {
-            total = data.productOrders[index].price + total;
+            total = data.productOrders[index].price * data.productOrders[index].count + total;
         }
         for (let index = 0; index < data.productOrders.length; index++) {
-            profit = data.productOrders[index].price - data.productOrders[index].originalPrice + total;
+            profit = data.productOrders[index].price * data.productOrders[index].count - data.productOrders[index].originalPrice * data.productOrders[index].count + total;
         }
         const newData = { ...data, createdAt: Date.now(), total: total, profit: profit };
         const value = await validateSchema(newData);
