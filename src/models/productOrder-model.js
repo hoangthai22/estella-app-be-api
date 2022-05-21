@@ -9,7 +9,7 @@ const countIdCollection = "countId";
 const idCollection = "6285f3b204f57b3b3b8d41e8";
 const productOrdersCollectionSchema = Joi.object({
     productOrderImage: Joi.string().required().min(3).max(500).trim(),
-    productOrderName: Joi.string().required().min(3).max(50).trim(),
+    productOrderName: Joi.string().min(3).max(50).trim(),
     originalPrice: Joi.number().integer().required(),
     price: Joi.number().integer().required(),
     _destroy: Joi.boolean().default(false),
