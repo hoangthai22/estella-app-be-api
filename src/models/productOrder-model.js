@@ -1,9 +1,12 @@
 import Joi from "joi";
 import { getDB } from "../config/mongodb.js";
 import { ObjectId } from "mongodb";
+import { caculatorId } from "../utils/constants.js";
 
 //Defint Board collection
 const productOrdersCollection = "productOrders";
+const countIdCollection = "countId";
+const idCollection = "6285f3b204f57b3b3b8d41e8";
 const productOrdersCollectionSchema = Joi.object({
     productOrderImage: Joi.string().required().min(3).max(500).trim(),
     productOrderName: Joi.string().required().min(3).max(50).trim(),
@@ -61,7 +64,23 @@ const createProductOrder = async (data) => {
     try {
         const newData = { ...data, createdAt: Date.now() };
         const value = await validateSchema(newData);
-        const result = await getDB().collection(productOrdersCollection).insertOne(value);
+        const idCollection = await getDB()
+            .collection(countIdCollection)
+            .findOneAndUpdate(
+                { _id: ObjectId(idCollection) },
+                {
+                    $inc: {
+                        idProductOrders: 1,
+                    },
+                },
+                { returnDocument: "after" }
+            )
+            .then((res) => {
+                if (res) {
+                    return { ...value, idProduct: "MN" + caculatorId(res.value.idProductOrders) };
+                }
+            });
+        const result = await getDB().collection(productOrdersCollection).insertOne(idCollection);
         return result;
     } catch (error) {
         throw new Error(error?.details[0]?.message);

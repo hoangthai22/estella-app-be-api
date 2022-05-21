@@ -1,9 +1,11 @@
 import Joi from "joi";
 import { ObjectId } from "mongodb";
 import { getDB } from "../config/mongodb.js";
+import { caculatorId } from "../utils/constants.js";
 
 //Defint Board collection
 const ordersCollection = "orders";
+const idCollection = "6285f3b204f57b3b3b8d41e8";
 const ordersCollectionSchema = Joi.object({
     productOrders: Joi.array().required(),
     information: Joi.string().required().min(0).max(500).trim(),
@@ -25,7 +27,6 @@ const validateSchema = async (data) => {
 
 const getAllOrders = async (limit, page) => {
     try {
-        console.log(limit, page);
         const result = await getDB()
             .collection(ordersCollection)
             .find({ _destroy: false, isFinish: false })
@@ -126,7 +127,25 @@ const createOrder = async (data) => {
         }
         const newData = { ...data, createdAt: Date.now(), total: total, profit: profit };
         const value = await validateSchema(newData);
-        const result = await getDB().collection(ordersCollection).insertOne(value);
+
+        const idCollection = await getDB()
+            .collection(countIdCollection)
+            .findOneAndUpdate(
+                { _id: ObjectId(idCollection) },
+                {
+                    $inc: {
+                        idProductOrders: 1,
+                    },
+                },
+                { returnDocument: "after" }
+            )
+            .then((res) => {
+                if (res) {
+                    return { ...value, idOrder: "HT" + caculatorId(res.value.idProductOrders) };
+                }
+            });
+
+        const result = await getDB().collection(ordersCollection).insertOne(idCollection);
 
         return result;
     } catch (error) {
